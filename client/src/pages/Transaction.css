@@ -1,0 +1,305 @@
+.transaction-page {
+  padding: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.transaction-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.transaction-page__title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.transaction-page__subtitle {
+  margin: 0.5rem 0 0;
+  color: #555;
+}
+
+.transaction-page__loading {
+  color: #0078d4;
+  font-weight: 600;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.transaction-page__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns:
+    minmax(320px, 2fr)
+    minmax(280px, 1fr);
+  margin-bottom: 1.5rem;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.transaction-page__card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.transaction-page__section-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.transaction-page__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.transaction-page__form-group {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+/* =========================
+   INPUT + SELECT
+========================= */
+
+.transaction-page__input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  font-size: 1rem;
+  background: #ffffff;
+  color: #111827;
+  box-sizing: border-box;
+}
+
+.transaction-page__input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================
+   SELECTED BANK
+========================= */
+
+.transaction-page__selected {
+  width: 100%;
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  color: #374151;
+  box-sizing: border-box;
+}
+
+/* =========================
+   CATEGORY HINT
+========================= */
+
+.transaction-page__hint {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.transaction-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.transaction-page__button {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  color: #fff;
+  background-color: #2563eb;
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    opacity 0.15s ease;
+  font-size: 0.95rem;
+}
+
+.transaction-page__button:hover {
+  transform: translateY(-1px);
+}
+
+.transaction-page__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.transaction-page__button--primary {
+  background-color: #2563eb;
+}
+
+.transaction-page__button--secondary {
+  background-color: #6b7280;
+}
+
+.transaction-page__button--danger {
+  background-color: #dc2626;
+}
+
+.transaction-page__button--small {
+  padding: 0.45rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.transaction-page__message {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.65rem;
+  font-weight: 500;
+}
+
+.transaction-page__message--success {
+  background: #ecfdf5;
+  color: #166534;
+  border: 1px solid #a7f3d0;
+}
+
+.transaction-page__message--error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.transaction-page__summary-card {
+  min-height: fit-content;
+}
+
+.transaction-page__summary-text {
+  margin: 0.75rem 0;
+  color: #374151;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.transaction-page__table-card {
+  overflow-x: auto;
+}
+
+.transaction-page__table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.transaction-page__table-wrap {
+  overflow-x: auto;
+}
+
+.transaction-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.transaction-page__table th,
+.transaction-page__table td {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.transaction-page__table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.transaction-page__table td {
+  color: #374151;
+}
+
+.transaction-page__empty-row {
+  padding: 1.2rem;
+  text-align: center;
+}
+
+/* =========================
+   TABLE ACTIONS
+========================= */
+
+.transaction-page__action-cell {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .transaction-page__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .transaction-page {
+    padding: 1rem;
+  }
+
+  .transaction-page__title {
+    font-size: 1.6rem;
+  }
+
+  .transaction-page__table {
+    min-width: 100%;
+  }
+
+  .transaction-page__action-cell {
+    flex-direction: column;
+  }
+}
