@@ -1,0 +1,184 @@
+.bank-page {
+    min-height: 100vh;
+    background: #f4f6fb;
+    padding: 2rem;
+}
+
+.bank-page__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.bank-page__hero,
+.bank-page__card {
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
+.bank-page__title {
+    margin: 0;
+    margin-bottom: 0.75rem;
+}
+
+.bank-page__subtitle {
+    margin: 0;
+    color: #555;
+}
+
+.bank-page__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+}
+
+.bank-page__section-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.bank-page__form-group {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.bank-page__input {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #d8dde7;
+    outline: none;
+    font-size: 1rem;
+}
+
+.bank-page__checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.bank-page__actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.bank-page__button {
+    padding: 0.85rem 1.25rem;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bank-page__button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.bank-page__button--primary {
+    background: #1f69ff;
+}
+
+.bank-page__button--secondary {
+    background: #fff;
+    color: #333;
+    border: 1px solid #d8dde7;
+}
+
+.bank-page__button--small {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.9rem;
+}
+
+.bank-page__button--success {
+    background: #4caf50;
+}
+
+.bank-page__button--danger {
+    background: #f44336;
+}
+
+.bank-page__message {
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+.bank-page__message--success {
+    background: #e9f7ff;
+    color: #054a91;
+}
+
+.bank-page__message--error {
+    background: #ffe1e1;
+    color: #b00020;
+}
+
+.bank-page__summary-text {
+    margin: 0.5rem 0 0;
+    color: #555;
+}
+
+.bank-page__table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bank-page__loading {
+    color: #1f69ff;
+}
+
+.bank-page__table-wrap {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.bank-page__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.bank-page__table th,
+.bank-page__table td {
+    text-align: left;
+    padding: 0.9rem 0.75rem;
+    border-bottom: 1px solid #e6eaf2;
+    color: #364152;
+}
+
+.bank-page__table td {
+    color: #444;
+}
+
+.bank-page__action-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.bank-page__empty-row {
+    padding: 2rem 0;
+    text-align: center;
+    color: #777;
+}
+
+@media (max-width: 900px) {
+    .bank-page__grid {
+        grid-template-columns: 1fr;
+    }
+}
