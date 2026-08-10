@@ -9,16 +9,25 @@ const {
 
 module.exports.createCategoryController = async (req, res, next) => {
   try {
-    const CategoryData = req.body;
+    const CategoryData = { ...req.body };
     const userId = req.user._id;
     CategoryData.userId = userId;
-    CategoryData.image = CategoryData.imageDataUri;
-    const existingCategory = await getCategoryByNameService(CategoryData.name);
+
+    if (CategoryData.imageDataUri) {
+      CategoryData.image = CategoryData.imageDataUri;
+    }
+
+    if (!CategoryData.name || !CategoryData.name.trim()) {
+      return res.status(400).json({ message: "Category name is required" });
+    }
+
+    const existingCategory = await getCategoryByNameService(CategoryData.name.trim());
     if (existingCategory) {
       return res.status(400).json({
         message: "Category with this name already exists",
       });
     }
+
     const newCategory = await createCategoryService(CategoryData);
     res.status(201).json({
       message: "Category created successfully",
@@ -63,22 +72,28 @@ module.exports.getCategoryByIdController = async (req, res, next) => {
 module.exports.updateCategoryController = async (req, res, next) => {
   try {
     const CategoryId = req.params.id;
-    const CategoryData = req.body;
-    console.log(req.body, req.user, req.file)
+    const CategoryData = { ...req.body };
     const existingCategory = await getCategoryByIdService(CategoryId);
+
     if (!existingCategory) {
       return res.status(404).json({
         message: "Category not found",
       });
     }
-    if (CategoryData.name && CategoryData.name !== existingCategory.name) {
-      const CategoryWithSameName = await getCategoryByNameService(CategoryData.name);
+
+    if (CategoryData.imageDataUri) {
+      CategoryData.image = CategoryData.imageDataUri;
+    }
+
+    if (CategoryData.name && CategoryData.name.trim() !== existingCategory.name) {
+      const CategoryWithSameName = await getCategoryByNameService(CategoryData.name.trim());
       if (CategoryWithSameName) {
         return res.status(400).json({
           message: "Category with this name already exists",
         });
       }
     }
+
     const updatedCategory = await updateCategoryService(CategoryId, CategoryData);
     res.status(200).json({
       message: "Category updated successfully",
