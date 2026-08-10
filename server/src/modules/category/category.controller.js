@@ -12,8 +12,12 @@ module.exports.createCategoryController = async (req, res, next) => {
     const CategoryData = req.body;
     const userId = req.user._id;
     CategoryData.userId = userId;
-    CategoryData.image = CategoryData.imageDataUri;
-    const existingCategory = await getCategoryByNameService(CategoryData.name);
+
+    if (req.file && req.body.imageDataUri) {
+      CategoryData.image = req.body.imageDataUri;
+    }
+
+    const existingCategory = await getCategoryByNameService(CategoryData.name, userId);
     if (existingCategory) {
       return res.status(400).json({
         message: "Category with this name already exists",
@@ -64,7 +68,7 @@ module.exports.updateCategoryController = async (req, res, next) => {
   try {
     const CategoryId = req.params.id;
     const CategoryData = req.body;
-    console.log(req.body, req.user, req.file)
+    const userId = req.user._id;
     const existingCategory = await getCategoryByIdService(CategoryId);
     if (!existingCategory) {
       return res.status(404).json({
@@ -72,12 +76,15 @@ module.exports.updateCategoryController = async (req, res, next) => {
       });
     }
     if (CategoryData.name && CategoryData.name !== existingCategory.name) {
-      const CategoryWithSameName = await getCategoryByNameService(CategoryData.name);
+      const CategoryWithSameName = await getCategoryByNameService(CategoryData.name, userId);
       if (CategoryWithSameName) {
         return res.status(400).json({
           message: "Category with this name already exists",
         });
       }
+    }
+    if (req.file && req.body.imageDataUri) {
+      CategoryData.image = req.body.imageDataUri;
     }
     const updatedCategory = await updateCategoryService(CategoryId, CategoryData);
     res.status(200).json({

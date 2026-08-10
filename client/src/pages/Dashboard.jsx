@@ -1,11 +1,14 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
-  const [selectedField, setSelectedField] = useState(null);
-  const storedUser =
-    JSON.parse(localStorage.getItem("currentUser") || "null") ||
+  const currentUser =
+    JSON.parse(localStorage.getItem("currentUser") || "null");
+  const registeredUser =
     JSON.parse(localStorage.getItem("registeredUser") || "null");
+  const storedUser = currentUser
+    ? { ...registeredUser, ...currentUser }
+    : registeredUser;
 
   if (!storedUser) {
     return (
@@ -13,7 +16,8 @@ function Dashboard() {
         <div className="login-page">
           <h2>No user data found</h2>
           <p>
-            Please <Link to="/login">sign in</Link> or <Link to="/register">register</Link> first.
+            Please <Link to="/login">sign in</Link> or{" "}
+            <Link to="/register">register</Link> first.
           </p>
         </div>
       </div>
@@ -29,15 +33,18 @@ function Dashboard() {
     .join(" ");
 
   const dob = storedUser.dob || storedUser.DOB || "";
-  const passwordMask = storedUser.password ? "•".repeat(storedUser.password.length) : "";
+  const passwordMask = storedUser.password
+    ? "•".repeat(storedUser.password.length)
+    : "";
   const address = storedUser.address || {};
-  const addressValue = `${address.street || ""} ${address.city || ""} ${address.state || ""} ${address.zip || ""}`.trim();
+  const addressValue =
+    `${address.street || ""} ${address.city || ""} ${address.state || ""} ${address.zip || ""}`.trim();
 
   const details = [
     { label: "Full Name", value: fullName },
     { label: "Email", value: storedUser.email },
-    { label: "Age", value: storedUser.age || "" },
-    { label: "DOB", value: dob },
+    { label: "Age", value: storedUser.age || "N/A" },
+    { label: "DOB", value: dob || "N/A" },
   ];
 
   return (
@@ -58,25 +65,6 @@ function Dashboard() {
             Welcome back, <strong>{fullName || storedUser.email}</strong>
           </p>
         </div>
-
-        <nav style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <button
-            type="button"
-            onClick={() => setSelectedField("email")}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#1f69ff",
-              fontSize: "1rem",
-              fontWeight: 600,
-              cursor: "pointer",
-              padding: 0,
-              textDecoration: "underline",
-            }}
-          >
-            {storedUser.email}
-          </button>
-        </nav>
       </header>
 
       <main style={{ padding: "2rem" }}>
@@ -91,41 +79,37 @@ function Dashboard() {
               boxShadow: "0 18px 45px rgba(0,0,0,0.06)",
             }}
           >
-            {!selectedField ? (
-              <div style={{ height: "240px" }} />
-            ) : (
-              <div>
-                <h2 style={{ marginTop: 0, marginBottom: "1rem" }}>
-                  {selectedField === "name" ? "User details" : "Email details"}
-                </h2>
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                  <tbody>
-                    {details.map((item) => (
-                      <tr key={item.label}>
-                        <td
-                          style={{
-                            padding: "0.75rem 1rem",
-                            width: "180px",
-                            fontWeight: 600,
-                            borderBottom: "1px solid #f0f0f0",
-                          }}
-                        >
-                          {item.label}
-                        </td>
-                        <td
-                          style={{
-                            padding: "0.75rem 1rem",
-                            borderBottom: "1px solid #f0f0f0",
-                          }}
-                        >
-                          {item.value}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            <div>
+              <h2 style={{ marginTop: 0, marginBottom: "1rem" }}>
+                User details
+              </h2>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <tbody>
+                  {details.map((item) => (
+                    <tr key={item.label}>
+                      <td
+                        style={{
+                          padding: "0.75rem 1rem",
+                          width: "180px",
+                          fontWeight: 600,
+                          borderBottom: "1px solid #f0f0f0",
+                        }}
+                      >
+                        {item.label}
+                      </td>
+                      <td
+                        style={{
+                          padding: "0.75rem 1rem",
+                          borderBottom: "1px solid #f0f0f0",
+                        }}
+                      >
+                        {item.value}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </main>
@@ -138,9 +122,7 @@ function Dashboard() {
         }}
       >
         <h2 style={{ margin: 0, fontSize: "1rem", color: "#333" }}>Address</h2>
-        <p style={{ margin: "0.5rem 0 0", color: "#555" }}>
-          {addressValue}
-        </p>
+        <p style={{ margin: "0.5rem 0 0", color: "#555" }}>{addressValue}</p>
       </footer>
     </div>
   );

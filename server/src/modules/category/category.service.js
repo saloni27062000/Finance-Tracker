@@ -24,9 +24,13 @@ module.exports.getCategoryByIdService = async (CategoryId) => {
   }
 };
 
-module.exports.getCategoryByNameService = async (CategoryName) => {
+module.exports.getCategoryByNameService = async (CategoryName, userId) => {
   try {
-    return await CategoryModel.findOne({ name: CategoryName });
+    const query = { name: CategoryName };
+    if (userId) {
+      query.userId = userId;
+    }
+    return await CategoryModel.findOne(query);
   } catch (error) {
     throw error;
   }
