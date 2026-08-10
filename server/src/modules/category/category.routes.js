@@ -19,7 +19,13 @@ router.post(
 );
 router.get("/", authenticate, getAllCategorysController);
 router.get("/:id", authenticate, getCategoryByIdController);
-router.put("/:id", authenticate, updateCategoryController);
+router.put(
+  "/:id",
+  upload.single("image"),
+  convertToBase64,
+  authenticate,
+  updateCategoryController,
+);
 router.delete("/:id", authenticate, deleteCategoryController);
 
 module.exports = router;
