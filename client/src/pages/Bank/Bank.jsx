@@ -5,7 +5,7 @@ import {
   deleteBank,
   fetchBanks,
   updateBank,
-} from "../features/bank/bankSlice";
+} from "../../features/bank/bankSlice";
 import "./Bank.css";
 
 const Bank = () => {
@@ -232,7 +232,7 @@ const Bank = () => {
                       <td className="bank-page__action-cell">
                         <button
                           onClick={() => handleEdit(bank)}
-                          className="bank-page__button bank-page__button--small"
+                          className="bank-page__button bank-page__button--small bg-secondary"
                         >
                           Edit
                         </button>

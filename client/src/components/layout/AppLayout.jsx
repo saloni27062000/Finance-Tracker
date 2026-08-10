@@ -1,24 +1,25 @@
 import React from "react";
-import SideBar from "../common/SideBar";
+import SideBar from "../common/Sidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Dashboard from "../../pages/Dashboard";
+import Dashboard from "../../pages/Dashboard/Dashboard";
 import Expenses from "../../pages/Expenses";
 import Transaction from "../../pages/Transaction";
 import Category from "../../pages/Category";
-import Login from "../../pages/Login";
+import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register";
 import Report from "../../pages/Reports";
 import FriendsAndFamily from "../../pages/FriendsAndFamily";
 import Investment from "../../pages/investment";
-import Bank from "../../pages/Bank";
+import Bank from "../../pages/Bank/Bank";
 
 function AppLayout() {
   return (
-    <div className="row" style={{ height: "100vh", margin: 0 }}>
-      <div className="col-2" style={{ padding: 0 }}>
+    <div className="app-shell">
+      <div className="sidebar-wrapper">
         <SideBar />
       </div>
-      <div className="col-10" style={{ padding: 0 }}>
+
+      <main className="app-content">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -32,7 +33,7 @@ function AppLayout() {
           <Route path="/bank" element={<Bank />} />
           <Route path="/report" element={<Report />} />
         </Routes>
-      </div>
+      </main>
     </div>
   );
 }

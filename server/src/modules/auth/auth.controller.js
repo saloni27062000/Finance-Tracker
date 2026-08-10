@@ -21,13 +21,14 @@ module.exports.loginController = async (req, res, next) => {
         }
         console.log({ _id: existingUser._id, email: existingUser.email });
         const token = jwt.sign({ _id: existingUser._id, email: existingUser.email }, process.env.JWT_SECRET);
+
+        const userResponse = existingUser.toObject();
+        delete userResponse.password;
+
         res.status(200).json({
             message: "login successful!!",
             token,
-            user: {
-                fullname: existingUser.fullname,
-                email: existingUser.email,
-            },
+            user: userResponse,
         });
     } catch (error) {
         next(error);

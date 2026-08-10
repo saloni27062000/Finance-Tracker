@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import "./Sidebar.css";
 
 function SideBar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const links = [
     { to: "/login", label: "Login" },
     { to: "/register", label: "Register" },
@@ -31,80 +34,58 @@ function SideBar() {
 
   const displayName = fullName || storedUser?.email || "";
 
-  const containerStyle = {
-    background: "linear-gradient(180deg, #0f172a 0%, #0b1220 100%)",
-    color: "#fff",
-    minHeight: "100vh",
-    padding: "20px 12px",
-    boxSizing: "border-box",
-    position: "sticky",
-    top: 0,
-  };
-
-  const brandStyle = {
-    fontSize: 18,
-    fontWeight: 700,
-    letterSpacing: ".4px",
-    marginBottom: 2,
-    textAlign: "center",
-  };
-
-  const nameStyle = {
-    marginTop: 8,
-    marginBottom: 18,
-    textAlign: "center",
-    fontSize: 14,
-    color: "#cbd5e1",
-  };
-
-  const ulStyle = {
-    listStyle: "none",
-    padding: 0,
-    margin: 0,
-  };
-
-  const liStyle = {
-    marginBottom: 8,
-  };
-
-  const linkStyle = {
-    display: "block",
-    padding: "10px 12px",
-    color: "rgba(255,255,255,0.9)",
-    textDecoration: "none",
-    borderRadius: 8,
-    fontWeight: 500,
-    transition: "background .12s ease, transform .06s ease",
-  };
-
-  const activeStyle = {
-    background: "linear-gradient(90deg,#7c3aed,#06b6d4)",
-    color: "#fff",
-    boxShadow: "0 8px 20px rgba(6,182,212,0.12)",
-  };
+  const closeMobileMenu = () => setMobileOpen(false);
 
   return (
-    <aside style={containerStyle}>
-      <div style={brandStyle}>ExpenseApp</div>
-      {displayName && <div style={nameStyle}>{displayName}</div>}
+    <>
+      <button
+        type="button"
+        className="sidebar-toggle"
+        aria-label="Toggle navigation"
+        onClick={() => setMobileOpen((prev) => !prev)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
-      <nav>
-        <ul style={ulStyle}>
-          {links.map((l) => (
-            <li key={l.to} style={liStyle}>
-              <NavLink
-                to={l.to}
-                style={({ isActive }) =>
-                  isActive ? { ...linkStyle, ...activeStyle } : linkStyle
-                }
-              >
-                {l.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </aside>
+      {mobileOpen && (
+        <button
+          type="button"
+          className="sidebar-backdrop"
+          aria-label="Close sidebar"
+          onClick={closeMobileMenu}
+        />
+      )}
+
+      <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`}>
+        <div className="sidebar-header">
+          <div className="sidebar-brand">ExpenseApp</div>
+          <button
+            type="button"
+            className="sidebar-close"
+            aria-label="Close sidebar"
+            onClick={closeMobileMenu}
+          >
+            ×
+          </button>
+        </div>
+
+        {displayName && <div className="sidebar-user">{displayName}</div>}
+
+        <nav className="sidebar-nav" aria-label="Main navigation">
+          <ul>
+            {links.map((link) => (
+              <li key={link.to}>
+                <NavLink to={link.to} onClick={closeMobileMenu}>
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    </>
   );
 }
 
