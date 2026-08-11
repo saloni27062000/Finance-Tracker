@@ -2,7 +2,7 @@ import React from "react";
 import SideBar from "../common/Sidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../../pages/Dashboard/Dashboard";
-import Expenses from "../../pages/Expenses";
+import Expenses from "../../pages/Expense/Expenses";
 import Transaction from "../../pages/Transaction";
 import Category from "../../pages/Category";
 import Login from "../../pages/Login/Login";
