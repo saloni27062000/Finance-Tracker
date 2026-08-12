@@ -6,6 +6,7 @@ import categoryReducer from "../features/category/categorySlice";
 import investmentReducer from "../features/investment/investmentSlice";
 import transactionReducer from "../features/transaction/transactionSlice";
 import expenseReducer from "../features/expense/expenseSlice";
+import friendsAndFamilyReducer from "../features/FriendsAndFamily/FriendsAndFamilySlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,5 +16,6 @@ export const store = configureStore({
     investment: investmentReducer,
     transaction: transactionReducer,
     expense: expenseReducer,
+    friendsAndFamily: friendsAndFamilyReducer,
   },
 });
