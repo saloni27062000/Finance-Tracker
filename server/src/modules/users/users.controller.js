@@ -63,17 +63,51 @@ module.exports.getUserByIdController = async (req, res, next) => {
 
 module.exports.updateUserController = async (req, res, next) => {
   try {
-    const userId = req.params.id;
-    const userData = req.body;
+    const userId = req.params.id || req.user?._id;
+    const userData = { ...req.body };
+
+    if (!userId) {
+      return res.status(400).json({
+        message: "User ID is required",
+      });
+    }
+
+    const existingUser = await getUserById(userId);
+    if (!existingUser) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    if (userData.email && userData.email !== existingUser.email) {
+      const userWithSameEmail = await getUserByEmail(userData.email);
+      if (userWithSameEmail) {
+        return res.status(400).json({
+          message: "User with this email already exists",
+        });
+      }
+    }
+
+    if (userData.password) {
+      const salt = await bcrypt.genSalt(10);
+      userData.password = await bcrypt.hash(userData.password, salt);
+    } else {
+      delete userData.password;
+    }
+
     const updatedUser = await updateUser(userId, userData);
     if (!updatedUser) {
       return res.status(404).json({
         message: "User not found",
       });
     }
+
+    const userResponse = updatedUser.toObject();
+    delete userResponse.password;
+
     res.status(200).json({
       message: "User updated successfully",
-      data: updatedUser,
+      data: userResponse,
     });
   } catch (error) {
     next(error);

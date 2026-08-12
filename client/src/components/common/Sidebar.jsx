@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 function SideBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const links = [
     { to: "/login", label: "Login" },
@@ -35,6 +36,14 @@ function SideBar() {
   const displayName = fullName || storedUser?.email || "";
 
   const closeMobileMenu = () => setMobileOpen(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("registeredUser");
+    closeMobileMenu();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -84,6 +93,14 @@ function SideBar() {
             ))}
           </ul>
         </nav>
+
+        <button
+          type="button"
+          className="sidebar-logout"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </aside>
     </>
   );

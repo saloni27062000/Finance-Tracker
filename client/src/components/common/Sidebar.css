@@ -92,6 +92,25 @@
   box-shadow: 0 12px 24px rgba(99, 102, 241, 0.28);
 }
 
+.sidebar-logout {
+  margin-top: 18px;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.sidebar-logout:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
 .sidebar-toggle,
 .sidebar-close,
 .sidebar-backdrop {
