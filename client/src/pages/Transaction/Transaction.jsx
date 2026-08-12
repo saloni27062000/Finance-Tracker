@@ -7,59 +7,59 @@ import {
   deleteTransaction,
   fetchTransactions,
   updateTransaction,
-} from "../features/Transaction/transactionSlice";
+} from "../../features/Transaction/transactionSlice";
 
-import { fetchBanks } from "../features/bank/bankSlice";
+import { fetchBanks } from "../../features/bank/bankSlice";
 
 import "./Transaction.css";
 
 function Transaction() {
   const dispatch = useDispatch();
 
-  // =========================
+
   // TRANSACTION STATE
-  // =========================
+
   const {
     transactions = [],
     loading,
     error,
   } = useSelector((state) => state.transaction);
 
-  // =========================
+
   // BANK STATE
-  // =========================
+
   const { banks = [] } = useSelector((state) => state.bank);
 
-  // =========================
+
   // FORM STATE
-  // =========================
+
   const [formState, setFormState] = useState({
     amount: "",
     type: "expense",
     description: "",
   });
 
-  // =========================
+
   // EDIT STATE
-  // =========================
+
   const [editingId, setEditingId] = useState(null);
 
-  // =========================
+
   // MESSAGE
-  // =========================
+
   const [message, setMessage] = useState("");
 
-  // =========================
+
   // CATEGORY STATE
-  // =========================
+
   const [categories, setCategories] = useState([]);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // =========================
+
   // FETCH TRANSACTIONS,
   // BANKS & CATEGORIES
-  // =========================
+
   useEffect(() => {
     // Fetch transactions
     dispatch(fetchTransactions());
@@ -80,37 +80,6 @@ function Transaction() {
       .then((res) => {
         console.log("CATEGORY API RESPONSE:", res.data);
 
-        /*
-          Backend can return different structures.
-
-          Example 1:
-          [
-            {
-              _id: "...",
-              name: "Food"
-            }
-          ]
-
-          Example 2:
-          {
-            data: [
-              {
-                _id: "...",
-                name: "Food"
-              }
-            ]
-          }
-
-          Example 3:
-          {
-            categories: [
-              {
-                _id: "...",
-                name: "Food"
-              }
-            ]
-          }
-        */
 
         let categoryList = [];
 
@@ -144,9 +113,9 @@ function Transaction() {
       });
   }, [dispatch]);
 
-  // =========================
+
   // RESET FORM
-  // =========================
+
   const resetForm = () => {
     setEditingId(null);
 
@@ -166,9 +135,9 @@ function Transaction() {
     setMessage("");
   };
 
-  // =========================
+
   // HANDLE INPUT CHANGE
-  // =========================
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -178,9 +147,9 @@ function Transaction() {
     }));
   };
 
-  // =========================
+
   // HANDLE CATEGORY CHANGE
-  // =========================
+
   const handleCategoryChange = (event) => {
     const categoryId = event.target.value;
 
@@ -191,9 +160,9 @@ function Transaction() {
     setSelectedCategory(category || null);
   };
 
-  // =========================
+
   // HANDLE SUBMIT
-  // =========================
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -203,9 +172,9 @@ function Transaction() {
     const selectedBank =
       banks?.find((bank) => bank.isSelected) || null;
 
-    // =========================
+
     // VALIDATE BANK
-    // =========================
+
     if (!selectedBank) {
       setMessage(
         "No selected bank. Please go to Bank and select a bank first."
@@ -213,9 +182,9 @@ function Transaction() {
       return;
     }
 
-    // =========================
+
     // VALIDATE CATEGORY
-    // =========================
+
     if (!selectedCategory) {
       setMessage(
         "No category selected. Please create a category first."
@@ -223,9 +192,9 @@ function Transaction() {
       return;
     }
 
-    // =========================
+
     // VALIDATE AMOUNT
-    // =========================
+
     const amountValue = parseFloat(formState.amount);
 
     if (
@@ -237,9 +206,9 @@ function Transaction() {
       return;
     }
 
-    // =========================
+
     // TRANSACTION DATA
-    // =========================
+
     const transactionData = {
       categoryId: selectedCategory._id,
       bankId: selectedBank._id,
@@ -254,9 +223,9 @@ function Transaction() {
     );
 
     try {
-      // =========================
+
       // UPDATE
-      // =========================
+
       if (editingId) {
         await dispatch(
           updateTransaction({
@@ -270,9 +239,9 @@ function Transaction() {
         );
       }
 
-      // =========================
+
       // CREATE
-      // =========================
+
       else {
         await dispatch(
           addTransaction(transactionData)
@@ -298,21 +267,21 @@ function Transaction() {
         typeof submitError === "string"
           ? submitError
           : submitError?.message ||
-              "Failed to save transaction."
+          "Failed to save transaction."
       );
     }
   };
 
-  // =========================
+
   // EDIT TRANSACTION
-  // =========================
+
   const handleEdit = (transaction) => {
     setEditingId(transaction._id);
 
     setFormState({
       amount:
         transaction.amount !== undefined &&
-        transaction.amount !== null
+          transaction.amount !== null
           ? String(transaction.amount)
           : "",
 
@@ -338,9 +307,9 @@ function Transaction() {
     setMessage("");
   };
 
-  // =========================
+
   // DELETE TRANSACTION
-  // =========================
+
   const handleDelete = async (transactionId) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this transaction?"
@@ -374,14 +343,14 @@ function Transaction() {
         typeof deleteError === "string"
           ? deleteError
           : deleteError?.message ||
-              "Failed to delete transaction."
+          "Failed to delete transaction."
       );
     }
   };
 
-  // =========================
+
   // CALCULATE TOTAL
-  // =========================
+
   const totalTransactions =
     transactions.length;
 
@@ -391,9 +360,9 @@ function Transaction() {
     0
   );
 
-  // =========================
+
   // UI
-  // =========================
+
   return (
     <div className="transaction-page">
 
@@ -578,8 +547,8 @@ function Transaction() {
                 {loading
                   ? "Saving..."
                   : editingId
-                  ? "Update"
-                  : "Create"}
+                    ? "Update"
+                    : "Create"}
               </button>
 
               {editingId && (
@@ -601,11 +570,10 @@ function Transaction() {
           ========================= */}
           {(message || error) && (
             <div
-              className={`transaction-page__message ${
-                error
+              className={`transaction-page__message ${error
                   ? "transaction-page__message--error"
                   : "transaction-page__message--success"
-              }`}
+                }`}
             >
               {error || message}
             </div>
@@ -775,8 +743,8 @@ function Transaction() {
                         <td>
                           {transaction.createdAt
                             ? new Date(
-                                transaction.createdAt
-                              ).toLocaleDateString()
+                              transaction.createdAt
+                            ).toLocaleDateString()
                             : "-"}
                         </td>
 

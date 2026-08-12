@@ -3,13 +3,13 @@ import SideBar from "../common/Sidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import Expenses from "../../pages/Expenses";
-import Transaction from "../../pages/Transaction";
+import Transaction from "../../pages/Transaction/Transaction";
 import Category from "../../pages/Category";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register";
 import Report from "../../pages/Reports";
 import FriendsAndFamily from "../../pages/FriendsAndFamily";
-import Investment from "../../pages/investment";
+import Investment from "../../pages/Investment/investment";
 import Bank from "../../pages/Bank/Bank";
 
 function AppLayout() {
