@@ -93,7 +93,6 @@ module.exports.updateCategoryController = async (req, res, next) => {
         });
       }
     }
-
     const updatedCategory = await updateCategoryService(CategoryId, CategoryData);
     res.status(200).json({
       message: "Category updated successfully",

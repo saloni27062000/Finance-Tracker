@@ -1,0 +1,173 @@
+.friends-family-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 2rem;
+}
+
+.friends-family-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.friends-family-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+}
+
+.friends-family-title {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+  color: #0f172a;
+}
+
+.friends-family-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.friends-family-field {
+  display: block;
+}
+
+.friends-family-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.friends-family-input,
+.friends-family-select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #dbe2ea;
+  background: #fff;
+  font-size: 0.98rem;
+  color: #0f172a;
+}
+
+.friends-family-input:focus,
+.friends-family-select:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.15);
+  border-color: #7c3aed;
+}
+
+.friends-family-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.friends-family-button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.friends-family-button:hover {
+  transform: translateY(-1px);
+  opacity: 0.97;
+}
+
+.friends-family-button--primary {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  color: #ffffff;
+}
+
+.friends-family-button--secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.friends-family-button--edit {
+  background: #e0e7ff;
+  color: #312e81;
+}
+
+.friends-family-button--delete {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.friends-family-message {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.friends-family-message--success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.friends-family-message--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.friends-family-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.friends-family-list-title {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #0f172a;
+}
+
+.friends-family-loading {
+  color: #475569;
+}
+
+.friends-family-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.friends-family-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem;
+  background: #f8fafc;
+}
+
+.friends-family-item h4 {
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+
+.friends-family-meta {
+  margin: 0.25rem 0;
+  color: #475569;
+}
+
+.friends-family-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.friends-family-empty {
+  padding: 1rem;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .friends-family-page {
+    padding: 1rem;
+  }
+}
