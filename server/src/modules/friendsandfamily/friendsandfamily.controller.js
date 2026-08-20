@@ -28,7 +28,10 @@ module.exports.createFriendsAndFamilyController = async (req, res, next) => {
         message: "Friends and Family with this name already exists",
       });
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(userId);
+    if (!selectedBank) {
+      return res.status(404).json({ message: "Selected bank not found" });
+    }
     const amount = -Number(friendsAndFamilyData.transactions[0].amount);
     const bankData = await updateBankBalanceService(
       String(selectedBank._id),
@@ -101,6 +104,36 @@ module.exports.updateFriendsAndFamilyController = async (req, res, next) => {
         });
       }
     }
+    // If transactions are present in the update, adjust the selected bank balance
+    if (
+      FriendsAndFamilyData.transactions &&
+      FriendsAndFamilyData.transactions.length > 0
+    ) {
+      const newAmount = Number(
+        FriendsAndFamilyData.transactions[0].amount || 0,
+      );
+      const existingFirst = existingFriendsAndFamily.transactions?.[0];
+      const existingAmount = existingFirst
+        ? Number(existingFirst.amount || 0)
+        : 0;
+      const delta = newAmount - existingAmount; // positive => more given, negative => reduced
+
+      if (delta !== 0) {
+        const selectedBank = await getSelectedBankIdService(req.user._id);
+        if (!selectedBank) {
+          return res.status(404).json({ message: "Selected bank not found" });
+        }
+
+        // When user gives more money (delta > 0) we need to deduct from bank (amount negative)
+        // When the amount is reduced (delta < 0) we add back to bank (amount positive)
+        const bankAdjustment = -delta;
+        await updateBankBalanceService(
+          String(selectedBank._id),
+          bankAdjustment,
+        );
+      }
+    }
+
     const updatedFriendsAndFamily = await updateFriendsAndFamilyService(
       FriendsAndFamilyId,
       FriendsAndFamilyData,
@@ -146,7 +179,7 @@ module.exports.addTransactionController = async (req, res, next) => {
         message: "FriendsAndFamily not found",
       });
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(req.user._id);
     if (!selectedBank) {
       return res.status(404).json({
         message: "Selected bank not found",
@@ -181,6 +214,7 @@ module.exports.receiveAmountController = async (req, res, next) => {
     const result = await receiveAmountService(
       FriendsAndFamilyId,
       TransactionId,
+      req.user._id,
     );
     res.status(200).json({
       message: "Amount received and transaction removed successfully",

@@ -81,6 +81,7 @@ module.exports.addTransactionService = async (
 module.exports.receiveAmountService = async (
   friendsAndFamilyId,
   transactionId,
+  userId,
 ) => {
   try {
     const friendsAndFamily =
@@ -99,7 +100,7 @@ module.exports.receiveAmountService = async (
     );
     const updatedFriendsAndFamily = await friendsAndFamily.save();
 
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(userId);
     if (!selectedBank) {
       throw new Error("Selected bank not found");
     }

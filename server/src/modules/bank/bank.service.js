@@ -31,9 +31,9 @@ module.exports.getBankByNameService = async (bankName) => {
     throw error;
   }
 };
-module.exports.getSelectedBankIdService = async () => {
+module.exports.getSelectedBankIdService = async (userId) => {
   try {
-    return await BankModel.findOne({ isSelected: true });
+    return await BankModel.findOne({ userId, isSelected: true });
   } catch (error) {
     throw error;
   }
@@ -76,7 +76,7 @@ module.exports.updateBankBalanceService = async (bankId, amount) => {
     const bank = await BankModel.findById(bankId);
     if (amount < 0) {
       if (Math.abs(amount) > bank.balance) {
-        throw new Error("Insufficient Fund!!!")
+        throw new Error("Insufficient Fund!!!");
       }
     }
     bank.balance += amount;

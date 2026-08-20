@@ -2,6 +2,7 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchBanks } from "../../features/bank/bankSlice";
 import { fetchTransactions } from "../../features/transaction/transactionSlice";
 import "./Dashboard.css";
 
@@ -60,6 +61,7 @@ const modules = [
 function Dashboard() {
   const dispatch = useDispatch();
   const { transactions = [] } = useSelector((state) => state.transaction);
+  const { banks = [] } = useSelector((state) => state.bank);
   const [categoryDetails, setCategoryDetails] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [formState, setFormState] = useState(() => {
@@ -85,6 +87,7 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch(fetchTransactions());
+    dispatch(fetchBanks());
 
     const token = localStorage.getItem("token");
 
@@ -236,8 +239,10 @@ function Dashboard() {
     );
 
   const savings = monthlyIncome - monthlyExpenses;
-  const monthlyBudget = 30000;
-  const remainingBudget = Math.max(monthlyBudget - monthlyExpenses, 0);
+  const selectedBank = banks.find((bank) => bank.isSelected);
+  const accountBalance = Number(selectedBank?.balance || 0);
+  const monthlyBudget = accountBalance + monthlyExpenses;
+  const remainingBudget = accountBalance;
 
   const stats = [
     { label: "Modules", value: modules.length + 1, hint: "active areas" },
@@ -306,16 +311,6 @@ function Dashboard() {
         monthlyExpenses > 0 ? Math.round((value / monthlyExpenses) * 100) : 0,
       color: chartColors[index % chartColors.length],
     }));
-
-  if (spendingChart.length === 0) {
-    spendingChart.push(
-      { label: "Housing", value: 82, color: "#6366f1" },
-      { label: "Food", value: 64, color: "#14b8a6" },
-      { label: "Bills", value: 58, color: "#f59e0b" },
-      { label: "Travel", value: 42, color: "#f97316" },
-      { label: "Fun", value: 31, color: "#ec4899" },
-    );
-  }
 
   return (
     <div className="dashboard-page">
@@ -387,7 +382,7 @@ function Dashboard() {
 
               <div className="progress-block">
                 <div className="progress-meta">
-                  <span>Spent</span>
+                  <span>Spent this month</span>
                   <strong>
                     ₹{monthlyExpenses.toLocaleString("en-IN")} / ₹
                     {monthlyBudget.toLocaleString("en-IN")}
@@ -397,7 +392,7 @@ function Dashboard() {
                   <div
                     className="progress-fill progress-fill--primary"
                     style={{
-                      width: `${Math.min((monthlyExpenses / monthlyBudget) * 100, 100)}%`,
+                      width: `${monthlyBudget > 0 ? Math.min((monthlyExpenses / monthlyBudget) * 100, 100) : 0}%`,
                     }}
                   />
                 </div>
@@ -405,16 +400,14 @@ function Dashboard() {
 
               <div className="progress-block">
                 <div className="progress-meta">
-                  <span>Remaining</span>
-                  <strong>
-                    ₹{remainingBudget.toLocaleString("en-IN")} left
-                  </strong>
+                  <span>Bank balance</span>
+                  <strong>₹{remainingBudget.toLocaleString("en-IN")}</strong>
                 </div>
                 <div className="progress-track">
                   <div
                     className="progress-fill progress-fill--success"
                     style={{
-                      width: `${Math.min((remainingBudget / monthlyBudget) * 100, 100)}%`,
+                      width: `${monthlyBudget > 0 ? Math.min((remainingBudget / monthlyBudget) * 100, 100) : 0}%`,
                     }}
                   />
                 </div>

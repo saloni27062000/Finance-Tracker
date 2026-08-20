@@ -1,4 +1,7 @@
-const { getSelectedBankIdService, updateBankBalanceService } = require("../bank/bank.service");
+const {
+  getSelectedBankIdService,
+  updateBankBalanceService,
+} = require("../bank/bank.service");
 const {
   createTransactionService,
   getAllTransactionsService,
@@ -14,13 +17,16 @@ module.exports.createTransactionController = async (req, res, next) => {
     if (transactionData.type == "expense") {
       transactionData.amount = -transactionData.amount;
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(req.user._id);
+    if (!selectedBank) {
+      return res.status(404).json({ message: "Selected bank not found" });
+    }
     const amount = Number(transactionData.amount);
     const bankData = await updateBankBalanceService(
       String(selectedBank._id),
       amount,
     );
-    transactionData.bankId = String(selectedBank._id)
+    transactionData.bankId = String(selectedBank._id);
     const newTransaction = await createTransactionService(transactionData);
     res.status(201).json({
       message: "Transaction created successfully",
