@@ -28,6 +28,9 @@ module.exports.createInvestmentController = async (req, res, next) => {
       });
     }
     const selectedBank = await getSelectedBankIdService(userId);
+    if (!selectedBank) {
+      return res.status(404).json({ message: "Selected bank not found" });
+    }
     const amount = -Number(InvestmentData.amount);
     const bankData = await updateBankBalanceService(
       String(selectedBank._id),
@@ -98,7 +101,7 @@ module.exports.getAllInvestmentController = async (req, res, next) => {
     res.status(200).json({
       message: "Investment  retrieved successfully",
       data: investment,
-      userId
+      userId,
     });
   } catch (error) {
     next(error);
