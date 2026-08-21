@@ -20,6 +20,7 @@ module.exports.createInvestmentController = async (req, res, next) => {
     InvestmentData.userId = userId;
     const existingInvestment = await getInvestmentByNameService(
       InvestmentData.name,
+      userId,
     );
     if (existingInvestment) {
       return res.status(400).json({
@@ -141,6 +142,7 @@ module.exports.updateInvestmentController = async (req, res, next) => {
     ) {
       const InvestmentWithSameName = await getInvestmentByNameService(
         InvestmentData.name,
+        req.user._id,
       );
       if (InvestmentWithSameName) {
         return res.status(400).json({

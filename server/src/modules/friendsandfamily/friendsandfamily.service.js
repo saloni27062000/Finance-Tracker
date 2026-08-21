@@ -30,9 +30,12 @@ module.exports.getFriendsAndFamilyByIdService = async (friendsAndFamilyId) => {
 
 module.exports.getFriendsAndFamilyByNameService = async (
   friendsAndFamilyName,
+  userId,
 ) => {
   try {
-    return await FriendsAndFamilyModel.findOne({ name: friendsAndFamilyName });
+    const query = { name: friendsAndFamilyName };
+    if (userId) query.userId = userId;
+    return await FriendsAndFamilyModel.findOne(query);
   } catch (error) {
     throw error;
   }

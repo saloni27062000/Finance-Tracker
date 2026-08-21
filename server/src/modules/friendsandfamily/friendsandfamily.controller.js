@@ -22,6 +22,7 @@ module.exports.createFriendsAndFamilyController = async (req, res, next) => {
     friendsAndFamilyData.userId = userId;
     const existingFriendsAndFamily = await getFriendsAndFamilyByNameService(
       friendsAndFamilyData.name,
+      userId,
     );
     if (existingFriendsAndFamily) {
       return res.status(400).json({
@@ -97,8 +98,8 @@ module.exports.updateFriendsAndFamilyController = async (req, res, next) => {
       FriendsAndFamilyData.name !== existingFriendsAndFamily.name
     ) {
       const FriendsAndFamilyWithSameName =
-        await getFriendsAndFamilyByNameService(FriendsAndFamilyData.name);
-      if (FriendsAndFamilyWithSameName) {
+        await getFriendsAndFamilyByNameService(FriendsAndFamilyData.name, req.user._id);
+      if (FriendsAndFamilyWithSameName && String(FriendsAndFamilyWithSameName._id) !== String(FriendsAndFamilyId)) {
         return res.status(400).json({
           message: "FriendsAndFamily with this name already exists",
         });

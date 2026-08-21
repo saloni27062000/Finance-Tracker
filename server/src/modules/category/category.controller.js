@@ -21,7 +21,7 @@ module.exports.createCategoryController = async (req, res, next) => {
       return res.status(400).json({ message: "Category name is required" });
     }
 
-    const existingCategory = await getCategoryByNameService(CategoryData.name.trim());
+    const existingCategory = await getCategoryByNameService(CategoryData.name.trim(), userId);
     if (existingCategory) {
       return res.status(400).json({
         message: "Category with this name already exists",
@@ -86,8 +86,8 @@ module.exports.updateCategoryController = async (req, res, next) => {
     }
 
     if (CategoryData.name && CategoryData.name.trim() !== existingCategory.name) {
-      const CategoryWithSameName = await getCategoryByNameService(CategoryData.name.trim());
-      if (CategoryWithSameName) {
+      const CategoryWithSameName = await getCategoryByNameService(CategoryData.name.trim(), req.user._id);
+      if (CategoryWithSameName && String(CategoryWithSameName._id) !== String(CategoryId)) {
         return res.status(400).json({
           message: "Category with this name already exists",
         });
