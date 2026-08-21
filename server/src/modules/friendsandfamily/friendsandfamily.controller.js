@@ -22,13 +22,14 @@ module.exports.createFriendsAndFamilyController = async (req, res, next) => {
     friendsAndFamilyData.userId = userId;
     const existingFriendsAndFamily = await getFriendsAndFamilyByNameService(
       friendsAndFamilyData.name,
+      userId,
     );
     if (existingFriendsAndFamily) {
       return res.status(400).json({
         message: "Friends and Family with this name already exists",
       });
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(userId);
     const amount = -Number(friendsAndFamilyData.transactions[0].amount);
     const bankData = await updateBankBalanceService(
       String(selectedBank._id),
@@ -94,8 +95,8 @@ module.exports.updateFriendsAndFamilyController = async (req, res, next) => {
       FriendsAndFamilyData.name !== existingFriendsAndFamily.name
     ) {
       const FriendsAndFamilyWithSameName =
-        await getFriendsAndFamilyByNameService(FriendsAndFamilyData.name);
-      if (FriendsAndFamilyWithSameName) {
+        await getFriendsAndFamilyByNameService(FriendsAndFamilyData.name, req.user._id);
+      if (FriendsAndFamilyWithSameName && String(FriendsAndFamilyWithSameName._id) !== String(FriendsAndFamilyId)) {
         return res.status(400).json({
           message: "FriendsAndFamily with this name already exists",
         });
@@ -146,7 +147,7 @@ module.exports.addTransactionController = async (req, res, next) => {
         message: "FriendsAndFamily not found",
       });
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(req.user._id);
     if (!selectedBank) {
       return res.status(404).json({
         message: "Selected bank not found",
@@ -181,6 +182,7 @@ module.exports.receiveAmountController = async (req, res, next) => {
     const result = await receiveAmountService(
       FriendsAndFamilyId,
       TransactionId,
+      req.user._id,
     );
     res.status(200).json({
       message: "Amount received and transaction removed successfully",

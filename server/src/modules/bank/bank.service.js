@@ -24,16 +24,21 @@ module.exports.getBankByIdService = async (bankId) => {
   }
 };
 
-module.exports.getBankByNameService = async (bankName) => {
+module.exports.getBankByNameService = async (bankName, userId) => {
   try {
-    return await BankModel.findOne({ name: bankName });
+    const query = { name: bankName };
+    if (userId) query.userId = userId;
+    return await BankModel.findOne(query);
   } catch (error) {
     throw error;
   }
 };
-module.exports.getSelectedBankIdService = async () => {
+
+module.exports.getSelectedBankIdService = async (userId) => {
   try {
-    return await BankModel.findOne({ isSelected: true });
+    const query = { isSelected: true };
+    if (userId) query.userId = userId;
+    return await BankModel.findOne(query);
   } catch (error) {
     throw error;
   }

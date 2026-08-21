@@ -14,7 +14,10 @@ module.exports.createTransactionController = async (req, res, next) => {
     if (transactionData.type == "expense") {
       transactionData.amount = -transactionData.amount;
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(req.user._id);
+    if (!selectedBank) {
+      return res.status(400).json({ message: "No selected bank for this user" });
+    }
     const amount = Number(transactionData.amount);
     const bankData = await updateBankBalanceService(
       String(selectedBank._id),

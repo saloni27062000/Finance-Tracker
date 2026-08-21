@@ -15,7 +15,7 @@ module.exports.createBankController = async (req, res, next) => {
     const userId = req.user._id;
 
     bankData.userId = userId;
-    const existingBank = await getBankByNameService(bankData.name);
+    const existingBank = await getBankByNameService(bankData.name, userId);
     if (existingBank) {
       return res.status(400).json({
         message: "Bank with this name already exists",
@@ -77,7 +77,7 @@ module.exports.updateBankController = async (req, res, next) => {
       });
     }
     if (bankData.name && bankData.name !== existingBank.name) {
-      const bankWithSameName = await getBankByNameService(bankData.name);
+      const bankWithSameName = await getBankByNameService(bankData.name, req.user._id);
       if (bankWithSameName) {
         return res.status(400).json({
           message: "Bank with this name already exists",

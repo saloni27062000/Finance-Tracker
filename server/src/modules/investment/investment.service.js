@@ -24,9 +24,11 @@ module.exports.getInvestmentByIdService = async (InvestmentId) => {
   }
 };
 
-module.exports.getInvestmentByNameService = async (InvestmentName) => {
+module.exports.getInvestmentByNameService = async (InvestmentName, userId) => {
   try {
-    return await InvestmentModel.findOne({ name: InvestmentName });
+    const query = { name: InvestmentName };
+    if (userId) query.userId = userId;
+    return await InvestmentModel.findOne(query);
   } catch (error) {
     throw error;
   }

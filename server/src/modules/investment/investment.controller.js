@@ -20,13 +20,14 @@ module.exports.createInvestmentController = async (req, res, next) => {
     InvestmentData.userId = userId;
     const existingInvestment = await getInvestmentByNameService(
       InvestmentData.name,
+      userId,
     );
     if (existingInvestment) {
       return res.status(400).json({
         message: "Investment with this name already exists",
       });
     }
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(userId);
     const amount = -Number(InvestmentData.amount);
     const bankData = await updateBankBalanceService(
       String(selectedBank._id),
@@ -64,7 +65,7 @@ module.exports.receiveInvestmentReturnController = async (req, res, next) => {
         ? isProfit
         : Number(returnAmt) >= Number(investment.amount);
 
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(req.user._id);
     if (!selectedBank) {
       throw new Error("Selected bank not found");
     }
@@ -138,6 +139,7 @@ module.exports.updateInvestmentController = async (req, res, next) => {
     ) {
       const InvestmentWithSameName = await getInvestmentByNameService(
         InvestmentData.name,
+        req.user._id,
       );
       if (InvestmentWithSameName) {
         return res.status(400).json({
@@ -149,7 +151,7 @@ module.exports.updateInvestmentController = async (req, res, next) => {
       InvestmentId,
       InvestmentData.amount,
     );
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(req.user._id);
     if (!selectedBank) {
       throw new Error("Selected bank not found");
     }

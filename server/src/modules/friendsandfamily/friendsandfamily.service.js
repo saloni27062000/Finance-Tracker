@@ -30,9 +30,12 @@ module.exports.getFriendsAndFamilyByIdService = async (friendsAndFamilyId) => {
 
 module.exports.getFriendsAndFamilyByNameService = async (
   friendsAndFamilyName,
+  userId,
 ) => {
   try {
-    return await FriendsAndFamilyModel.findOne({ name: friendsAndFamilyName });
+    const query = { name: friendsAndFamilyName };
+    if (userId) query.userId = userId;
+    return await FriendsAndFamilyModel.findOne(query);
   } catch (error) {
     throw error;
   }
@@ -81,6 +84,7 @@ module.exports.addTransactionService = async (
 module.exports.receiveAmountService = async (
   friendsAndFamilyId,
   transactionId,
+  userId,
 ) => {
   try {
     const friendsAndFamily =
@@ -99,7 +103,7 @@ module.exports.receiveAmountService = async (
     );
     const updatedFriendsAndFamily = await friendsAndFamily.save();
 
-    const selectedBank = await getSelectedBankIdService();
+    const selectedBank = await getSelectedBankIdService(userId);
     if (!selectedBank) {
       throw new Error("Selected bank not found");
     }
